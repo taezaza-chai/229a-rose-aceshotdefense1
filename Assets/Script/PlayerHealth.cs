@@ -8,19 +8,20 @@ public class PlayerHealth : MonoBehaviour
     private int currentHealth;
 
     public GameObject restartTextUI;
-    public TMP_Text hpText;  
+    public TMP_Text hpText;
 
     private bool isDead = false;
 
     void Start()
     {
         currentHealth = maxHealth;
+
         if (restartTextUI != null)
             restartTextUI.SetActive(false);
 
         Time.timeScale = 1f;
 
-        UpdateHPText(); 
+        UpdateHPText();
     }
 
     public void TakeDamage(int damage)
@@ -28,8 +29,7 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-        Debug.Log("Player HP: " + currentHealth);
-        UpdateHPText(); 
+        UpdateHPText();
 
         if (currentHealth <= 0)
         {
@@ -46,20 +46,32 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         isDead = true;
-        Debug.Log("Player Died");
 
         if (restartTextUI != null)
             restartTextUI.SetActive(true);
 
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; // หยุดเกม
     }
 
     void Update()
     {
+        // เผื่อยังอยากให้กด R ได้ด้วย
         if (isDead && Input.GetKeyDown(KeyCode.R))
         {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            RestartGame();
         }
+    }
+
+    // เพิ่มฟังก์ชันสำหรับปุ่ม
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void BackToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu"); // เปลี่ยนชื่อ scene ให้ตรงกับเมนูของคุณ
     }
 }

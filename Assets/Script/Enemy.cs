@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
             if (health != null)
                 health.TakeDamage(1);
 
-            Destroy(gameObject); // Enemy หายเมื่อชน Player
+            Destroy(gameObject); 
         }
 
         if (collision.collider.CompareTag("Bullet"))
@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
                 scoreManager.AddScore(1);
             }
 
-            Destroy(gameObject); // Enemy หายเมื่อโดนกระสุน
+            Destroy(gameObject); 
         }
     }
 }
