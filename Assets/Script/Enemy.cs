@@ -11,10 +11,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-        // สุ่มความเร็ว
         speed = Random.Range(minSpeed, maxSpeed);
 
-        // หา Player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
@@ -33,14 +31,24 @@ public class Enemy : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-
-
         if (collision.collider.CompareTag("Player"))
         {
-            // ลดเลือด
             PlayerHealth health = collision.collider.GetComponent<PlayerHealth>();
             if (health != null)
                 health.TakeDamage(1);
+        }
+
+        // ตรวจจับกระสุน
+        if (collision.collider.CompareTag("Bullet"))
+        {
+            // เพิ่มคะแนน
+            ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+            if (scoreManager != null)
+            {
+                scoreManager.AddScore(1);
+            }
+
+            Destroy(gameObject); // ทำลาย Enemy
         }
     }
 }
