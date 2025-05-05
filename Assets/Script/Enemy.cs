@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -36,19 +35,19 @@ public class Enemy : MonoBehaviour
             PlayerHealth health = collision.collider.GetComponent<PlayerHealth>();
             if (health != null)
                 health.TakeDamage(1);
+
+            Destroy(gameObject); // Enemy หายเมื่อชน Player
         }
 
-        // ตรวจจับกระสุน
         if (collision.collider.CompareTag("Bullet"))
         {
-            // เพิ่มคะแนน
             ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
             if (scoreManager != null)
             {
                 scoreManager.AddScore(1);
             }
 
-            Destroy(gameObject); // ทำลาย Enemy
+            Destroy(gameObject); // Enemy หายเมื่อโดนกระสุน
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; 
+using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 3;
     private int currentHealth;
 
-    public GameObject restartTextUI; 
+    public GameObject restartTextUI;
+    public TMP_Text hpText;  
 
     private bool isDead = false;
 
@@ -16,6 +17,10 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = maxHealth;
         if (restartTextUI != null)
             restartTextUI.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        UpdateHPText(); 
     }
 
     public void TakeDamage(int damage)
@@ -24,11 +29,18 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth -= damage;
         Debug.Log("Player HP: " + currentHealth);
+        UpdateHPText(); 
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    void UpdateHPText()
+    {
+        if (hpText != null)
+            hpText.text = "HP: " + currentHealth;
     }
 
     void Die()
@@ -38,12 +50,15 @@ public class PlayerHealth : MonoBehaviour
 
         if (restartTextUI != null)
             restartTextUI.SetActive(true);
+
+        Time.timeScale = 0f;
     }
 
     void Update()
     {
         if (isDead && Input.GetKeyDown(KeyCode.R))
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
