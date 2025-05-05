@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 3;
     private int currentHealth;
 
-    public GameObject restartTextUI;
+    public GameObject gameOverUI;
     public TMP_Text hpText;
 
     private bool isDead = false;
@@ -15,12 +16,10 @@ public class PlayerHealth : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-
-        if (restartTextUI != null)
-            restartTextUI.SetActive(false);
+        if (gameOverUI != null)
+            gameOverUI.SetActive(false);
 
         Time.timeScale = 1f;
-
         UpdateHPText();
     }
 
@@ -32,9 +31,7 @@ public class PlayerHealth : MonoBehaviour
         UpdateHPText();
 
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     void UpdateHPText()
@@ -46,32 +43,22 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         isDead = true;
-
-        if (restartTextUI != null)
-            restartTextUI.SetActive(true);
-
-        Time.timeScale = 0f; // หยุดเกม
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+        Time.timeScale = 0f;
     }
 
-    void Update()
-    {
-        // เผื่อยังอยากให้กด R ได้ด้วย
-        if (isDead && Input.GetKeyDown(KeyCode.R))
-        {
-            RestartGame();
-        }
-    }
-
-    // เพิ่มฟังก์ชันสำหรับปุ่ม
+    // เรียกในปุ่ม Restart
     public void RestartGame()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void BackToMenu()
+    // เรียกในปุ่ม Main Menu
+    public void GoToMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu"); // เปลี่ยนชื่อ scene ให้ตรงกับเมนูของคุณ
+        SceneManager.LoadScene("MainMenu");
     }
 }
